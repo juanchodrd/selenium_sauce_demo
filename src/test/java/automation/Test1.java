@@ -22,7 +22,7 @@ public class Test1 {
 	@BeforeMethod
 	public void setUp() {		
 		driver = Selenium.AbrirNavegador();
-		driver.get(configFileReader.getApplicationUrl());
+		//driver.get(configFileReader.getApplicationUrl());
 		extent=Selenium.generarReporte(extent);		
 	}
 		
@@ -45,11 +45,12 @@ public class Test1 {
 }
 
 	@AfterMethod
-	public void TearDown() throws Exception{
-        Selenium.sendLogAndScreens(testResult,logger,driver,extent);
-        Selenium.CerrarNavegador(driver);
+	public void TearDown(ITestResult testResult) throws Exception {
+		// Actualiza `testResult` con el valor proporcionado por TestNG
+		Selenium.sendLogAndScreens(testResult, logger, driver, extent);
+		Selenium.CerrarNavegador(driver);
+	}
 
-    }
 	@AfterTest
 	public void endReport(){
 		Selenium.finalizaReporte(extent);

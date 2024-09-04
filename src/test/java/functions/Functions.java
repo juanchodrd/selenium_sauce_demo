@@ -61,6 +61,9 @@ public class Functions {
 			// Para evitar excepciones de seguridad
 			options.setAcceptInsecureCerts(true);
 
+			options.addArguments("user-data-dir=/home/juancho/Automation/temp-chrome-profile"); // Usa el perfil temporal
+
+
 			driver = new ChromeDriver(options);
 			driver.manage().window().maximize();
 			return driver;
