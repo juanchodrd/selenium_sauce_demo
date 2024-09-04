@@ -12,12 +12,12 @@ public class selectProductTest extends testBase{
 	ProductsPage productsPage;
 
 	@Test
-	public void testLogin() {
+	public void selectProductTest() {
 		loginPage = new LoginPage(driver);
 		productsPage = new ProductsPage(driver);
 		String producto="Sauce Labs Backpack";
 
-		logger = extent.startTest("Comienzo caso de prueba");
+		logger = extent.startTest("Caso de prueba: Seleccionar un producto");
 		logger.log(LogStatus.INFO, "Realizo login");
 		loginPage.login("standard_user", "secret_sauce");
 		logger.log(LogStatus.INFO, "Verifica que la URL actual contenga \"inventory.html\"");
