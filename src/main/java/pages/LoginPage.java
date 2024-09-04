@@ -7,15 +7,15 @@ import org.openqa.selenium.WebElement;
 public class LoginPage {
     private WebDriver driver;
 
-    // Definición de elementos
-    private By usernameInput = By.cssSelector("[data-test='username']");
-    private By passwordInput = By.cssSelector("[data-test='password']");
-    private By loginSubmitButton = By.cssSelector("[data-test='login-button']");
-
     // Constructor
     public LoginPage(WebDriver driver) {
         this.driver = driver;
     }
+
+    // Definición de elementos
+    private By usernameInput = By.cssSelector("[data-test='username']");
+    private By passwordInput = By.cssSelector("[data-test='password']");
+    private By loginSubmitButton = By.cssSelector("[data-test='login-button']");
 
     // Método para ingresar el nombre de usuario
     public void enterUsername(String value) {
