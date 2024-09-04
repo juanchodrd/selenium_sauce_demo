@@ -6,43 +6,36 @@ import com.relevantcodes.extentreports.LogStatus;
 import dataProvider.ConfigFileReader;
 import functions.Functions;
 import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 
-public class Test1 {
-	WebDriver driver;	
+
+public class goToPage {
+	WebDriver driver;
 	Functions Selenium = new Functions();
 	ITestResult testResult;
 	ExtentReports extent;
-	ExtentTest logger;	
+	ExtentTest logger;
 	//Para poder leer el archivo de propiedades
 	ConfigFileReader configFileReader= new ConfigFileReader();
-		
+
 	@BeforeMethod
-	public void setUp() {		
+	public void setUp() {
 		driver = Selenium.AbrirNavegador();
-		//driver.get(configFileReader.getApplicationUrl());
-		extent=Selenium.generarReporte(extent);		
+		driver.get(configFileReader.getApplicationUrl());
+		extent=Selenium.generarReporte(extent);
 	}
-		
-	
+
+
 	@Test
 	@Parameters({ "ejemplo"})
-	
-	public void test(@Optional String ejemplo) {		
-			logger = extent.startTest("Comienzo caso de prueba");
-			logger.log(LogStatus.INFO, "Ingreso a URL...: ");
-			driver.get("https://www.google.co.in");
-	        String actualTilte = driver.getTitle();
-	        if (actualTilte.contains("Google")) {
-	            Assert.assertTrue(actualTilte.contains("Google"));
-	            System.out.println("OK");
-	        }
-	else{
-		System.out.println("NO OK");
-		}
-}
+
+	public void test(@Optional String ejemplo) {
+		logger = extent.startTest("Comienzo caso de prueba");
+		logger.log(LogStatus.INFO, "Ingreso a URL...: ");
+
+
+	}
 
 	@AfterMethod
 	public void TearDown(ITestResult testResult) throws Exception {
@@ -54,5 +47,5 @@ public class Test1 {
 	@AfterTest
 	public void endReport(){
 		Selenium.finalizaReporte(extent);
-    }
+	}
 }
