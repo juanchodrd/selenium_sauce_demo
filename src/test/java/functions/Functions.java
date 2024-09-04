@@ -105,20 +105,9 @@ public class Functions {
 		driver.quit();
 	}
 
-
+	//#########################################################
+//##################### SCREENSHOTS ###########################
 //#########################################################
-//##################### URL ################################
-//#########################################################
-
-	public WebDriver goToUrl(WebDriver driver){
-		//Test
-		driver.get("https://carrefour-test.cardif.com.ar/web/carrefour-servicios");
-		//Prod
-		//driver.get("https://www.servicioscarrefour1.com.ar/web/dc");
-			return driver;
-
-	}
-
 
 	public static String takeScreenshot(ITestResult testResult,WebDriver driver){
 		String destination = null;
