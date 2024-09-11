@@ -16,6 +16,10 @@ public class LoginPage {
         this.driver = driver;
     }
 
+    // Método ingresar a url
+    public void goToUrl() {
+        driver.get("https://www.saucedemo.com/");
+    }
 
     // Método para ingresar el nombre de usuario
     public void enterUsername(String value) {
