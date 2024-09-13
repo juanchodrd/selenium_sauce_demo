@@ -12,7 +12,8 @@ public class loginTest extends testBase {
     @Test
     public void testLogin() {
         loginPage = new LoginPage(driver);
-        logger = extent.startTest("Comienzo caso de prueba");
+        logger = extent.startTest("Login");
+        driver.get(configFileReader.getApplicationUrl());
         logger.log(LogStatus.INFO, "Ingreso usuario");
         loginPage.login("standard_user", "secret_sauce");
         // Verifica que la URL actual contenga "inventory.html"
