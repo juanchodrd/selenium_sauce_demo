@@ -4,6 +4,10 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class LoginPage {
     WebDriver driver;
@@ -11,6 +15,8 @@ public class LoginPage {
     private By usernameInput = By.cssSelector("[data-test='username']");
     private By passwordInput = By.cssSelector("[data-test='password']");
     private By loginSubmitButton = By.cssSelector("[data-test='login-button']");
+    private By textLoginIncorrecto = By.cssSelector("[data-test='error-button']");
+
 
     // Constructor
     public LoginPage(WebDriver driver) {
@@ -51,5 +57,22 @@ public class LoginPage {
     public void validateLogin() {
         String currentUrl = driver.getCurrentUrl();
         Assert.assertTrue("La URL contiene 'inventory.html'", currentUrl.contains("inventory.html"));
+    }
+
+    // Method to verify incorrect login message is visible and contains the expected text
+    public void verifyIncorrectLogin() {
+        // Wait for the error message to be visible
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));  // 10 seconds timeout
+        WebElement errorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(textLoginIncorrecto));
+
+        // Verify the text of the error message
+        String expectedMessage = "Epic sadface: Username and password do not match any user in this service";
+        String actualMessage = errorMessage.getText();
+
+        if (actualMessage.equals(expectedMessage)) {
+            System.out.println("Error message is displayed correctly: " + actualMessage);
+        } else {
+            System.out.println("Error message is incorrect. Found: " + actualMessage);
+        }
     }
 }

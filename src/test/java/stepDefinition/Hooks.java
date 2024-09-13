@@ -3,7 +3,7 @@ package stepDefinition;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
-import automation.DriverManager;
+import utils.DriverManager;
 
 public class Hooks {
 

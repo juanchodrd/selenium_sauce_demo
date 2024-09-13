@@ -1,10 +1,8 @@
-package automation;
+package utils;
 
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import io.cucumber.java.Scenario;
-import utils.ConfigFileReader;
-import utils.Functions;
 import org.openqa.selenium.WebDriver;
 
 public class DriverManager {
