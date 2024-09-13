@@ -15,6 +15,6 @@ public class Hooks {
 
     @After
     public void tearDown(Scenario scenario) throws Exception {
-        DriverManager.close(); // Cierra el WebDriver y finaliza el reporte
+        DriverManager.close(scenario); // Cierra el WebDriver y finaliza el reporte
     }
 }

@@ -2,6 +2,7 @@ package automation;
 
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
+import io.cucumber.java.Scenario;
 import utils.ConfigFileReader;
 import utils.Functions;
 import org.openqa.selenium.WebDriver;
@@ -36,9 +37,9 @@ public class DriverManager {
         DriverManager.logger = logger;
     }
 
-    public static void close() throws Exception {
+    public static void close(Scenario scenario) throws Exception {
         if (driver != null) {
-            selenium.sendLogAndScreens(logger, driver, extent, null); // Puedes pasar `null` si no tienes un escenario
+            selenium.sendLogAndScreens(logger, driver, extent, scenario); // Puedes pasar `null` si no tienes un escenario
             selenium.CerrarNavegador(driver);
             driver = null;
         }
