@@ -1,5 +1,6 @@
 package pages;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -44,5 +45,11 @@ public class LoginPage {
         enterUsername(username);
         enterPassword(password);
         submitLogin();
+    }
+
+    // metodo para obtener url actual
+    public void validateLogin() {
+        String currentUrl = driver.getCurrentUrl();
+        Assert.assertTrue("La URL contiene 'inventory.html'", currentUrl.contains("inventory.html"));
     }
 }

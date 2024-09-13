@@ -4,18 +4,14 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import pages.LoginPage;
-import automation.testBase;
+import automation.DriverManager;
 
-public class LoginSteps extends testBase {
-    LoginPage loginPage;
-    private final WebDriver driver = new ChromeDriver();
+public class LoginSteps {
+    private LoginPage loginPage = new LoginPage(DriverManager.getDriver()); // Pasar el WebDriver desde DriverManager
 
     @Given("que estoy en la página de login")
     public void que_estoy_en_la_pagina_de_login() {
-        loginPage = new LoginPage(driver);
         loginPage.goToUrl();
     }
 
@@ -26,7 +22,6 @@ public class LoginSteps extends testBase {
 
     @Then("debería ver la página de productos")
     public void deberia_ver_la_pagina_de_productos() {
-        String currentUrl = driver.getCurrentUrl();
-        Assert.assertTrue("La URL contiene 'inventory.html'", currentUrl.contains("inventory.html"));
+        loginPage.validateLogin();
     }
 }

@@ -12,10 +12,10 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
-import org.testng.ITestResult;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.Screenshot;
 import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
+import io.cucumber.java.Scenario;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -108,52 +108,28 @@ public class Functions {
 //##################### SCREENSHOTS ###########################
 //#########################################################
 
-    public static String takeScreenshot(ITestResult testResult, WebDriver driver) {
+    // Método para capturar la captura de pantalla basado en el nombre del escenario y su estado
+    public static String takeScreenshot(String scenarioName, WebDriver driver, String resultStatus) {
         String destination = null;
         try {
-            if (testResult.getStatus() == ITestResult.FAILURE) {
-                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-                //Al usar System.getProperty("user.dir")+ File.separator las barras quedan de tipo \, si utilizo ./target/" las barras seran /
-//            	String dir="./target/"+"ScreenshotFail";
-                String dir = System.getProperty("user.dir") + File.separator + "target" + File.separator + "ScreenshotFail";
-                File failure = new File(dir);
-                failure.mkdir();
-                destination = dir + File.separator + timeStamp + testResult.getName() + ".jpg";
-                System.out.println("Failed: " + driver.getCurrentUrl());
-                Screenshot fpScreenshot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(1000)).takeScreenshot(driver);
-                ImageIO.write(fpScreenshot.getImage(), "PNG", new File(destination));
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+            String dir = System.getProperty("user.dir") + File.separator + "target" + File.separator + "Screenshot" + resultStatus;
+            File directory = new File(dir);
+            directory.mkdir();
 
-            }
-            if (testResult.getStatus() == ITestResult.SUCCESS) {
-                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-                //Al usar System.getProperty("user.dir")+ File.separator las barras quedan de tipo \, si utilizo ./target/" las barras seran /
-//            	String dir="./target/"+"ScreenshotFail";
-                String dir = System.getProperty("user.dir") + File.separator + "target" + File.separator + "ScreenshotSuccess";
-                File failure = new File(dir);
-                failure.mkdir();
-                destination = dir + File.separator + timeStamp + testResult.getName() + ".jpg";
-                System.out.println("Success: " + driver.getCurrentUrl());
-                Screenshot fpScreenshot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(1000)).takeScreenshot(driver);
-                ImageIO.write(fpScreenshot.getImage(), "PNG", new File(destination));
-            }
-            if (testResult.getStatus() == ITestResult.SKIP) {
-                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-                //Al usar System.getProperty("user.dir")+ File.separator las barras quedan de tipo \, si utilizo ./target/" las barras seran /
-//            	String dir="./target/"+"ScreenshotFail";
-                String dir = System.getProperty("user.dir") + File.separator + "target" + File.separator + "ScreenshotSkip";
-                File skip = new File(dir);
-                skip.mkdir();
-                destination = dir + File.separator + timeStamp + testResult.getName() + ".jpg";
-                System.out.println("Skip: " + driver.getCurrentUrl());
-                Screenshot fpScreenshot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(1000)).takeScreenshot(driver);
-                ImageIO.write(fpScreenshot.getImage(), "PNG", new File(destination));
-            }
+            destination = dir + File.separator + timeStamp + "_" + scenarioName + ".jpg";
+            System.out.println(resultStatus + ": " + driver.getCurrentUrl());
+
+            Screenshot screenshot = new AShot()
+                    .shootingStrategy(ShootingStrategies.viewportPasting(1000))
+                    .takeScreenshot(driver);
+            ImageIO.write(screenshot.getImage(), "PNG", new File(destination));
+
         } catch (IOException e) {
-            System.out.println("Error trying to save screenshot" + e.getMessage());
+            System.out.println("Error trying to save screenshot: " + e.getMessage());
         }
         return destination;
     }
-
 
     //#########################################################
     //#######################SCROLL############################
@@ -186,24 +162,19 @@ public class Functions {
         return extent;
     }
 
-    public void sendLogAndScreens(ITestResult testResult, ExtentTest logger, WebDriver driver, ExtentReports extent) {
-        if (testResult.getStatus() == ITestResult.FAILURE) {
-            logger.log(LogStatus.FAIL, "Test Case Failed is " + testResult.getName());
-            logger.log(LogStatus.FAIL, "Test Case Failed is " + testResult.getThrowable());
-            String screenshotPath = Functions.takeScreenshot(testResult, driver);
+    public void sendLogAndScreens(ExtentTest logger, WebDriver driver, ExtentReports extent, Scenario scenario) {
+        if (scenario.isFailed()) {
+            logger.log(LogStatus.FAIL, "Test Case Failed: " + scenario.getName());
+            logger.log(LogStatus.FAIL, "Reason: " + scenario.getStatus());
+            String screenshotPath = takeScreenshot(scenario.getName(), driver, "Failure");
             logger.log(LogStatus.FAIL, logger.addScreenCapture(screenshotPath));
-
-        } else if (testResult.getStatus() == ITestResult.SKIP) {
-            logger.log(LogStatus.SKIP, "Test Case Skipped is " + testResult.getName());
-            String screenshotPath = Functions.takeScreenshot(testResult, driver);
-            logger.log(LogStatus.SKIP, logger.addScreenCapture(screenshotPath));
-        } else if (testResult.getStatus() == ITestResult.SUCCESS) {
-            logger.log(LogStatus.PASS, "Test Case Passed is " + testResult.getName());
-            String screenshotPath = Functions.takeScreenshot(testResult, driver);
+        } else {
+            logger.log(LogStatus.PASS, "Test Case Passed: " + scenario.getName());
+            String screenshotPath = takeScreenshot(scenario.getName(), driver, "Success");
             logger.log(LogStatus.PASS, logger.addScreenCapture(screenshotPath));
         }
-        // ending test
-        //endTest(logger) : It ends the current test and prepares to create HTML report
+
+        // Finaliza el test en el reporte
         extent.endTest(logger);
     }
 
