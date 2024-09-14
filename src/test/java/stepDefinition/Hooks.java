@@ -10,7 +10,6 @@ public class Hooks {
     @Before
     public void setUp(Scenario scenario) {
         DriverManager.initialize(); // Inicializa el WebDriver y el reporte
-        DriverManager.setLogger(DriverManager.getExtent().startTest(scenario.getName())); // Inicia un nuevo test en el reporte
     }
 
     @After
