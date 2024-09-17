@@ -10,13 +10,14 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class LoginPage {
-    WebDriver driver;
+
     // Definición de elementos
     private By usernameInput = By.cssSelector("[data-test='username']");
     private By passwordInput = By.cssSelector("[data-test='password']");
     private By loginSubmitButton = By.cssSelector("[data-test='login-button']");
     private By textLoginIncorrecto = By.cssSelector("[data-test='error-button']");
 
+    WebDriver driver;
 
     // Constructor
     public LoginPage(WebDriver driver) {
@@ -75,4 +76,6 @@ public class LoginPage {
             System.out.println("Error message is incorrect. Found: " + actualMessage);
         }
     }
+
+
 }
