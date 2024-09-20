@@ -26,8 +26,30 @@ public class selectProductSteps {
         productsPage.selectProduct(productName);
     }
 
+    @And("agrego al carrito el producto {string}")
+    public void agrego_al_carrito_el_producto(String productName) {
+        productsPage.addProductToCart(productName);
+    }
+
+    @Then("se muestra la opcion para remover el producto {string} del carrito")
+    public void elBotónDeRemoveDebeEstarVisible(String productName) {
+        productsPage.verifyRemoveFromCart(productName);
+    }
+
+    @And("el badge del carrito debe ser actualizado")
+    public void elBadgeDelCarritoDebeSerActualizado() {
+        productsPage.verifyCartBadgeUpdated();
+
+    }
+
     @Then("debería ver el detalle del producto seleccionado {string}")
     public void deberíaVerElDetalleDelProductoSeleccionado(String productName) {
         detailProductPage.validateProductTitle(productName);
+    }
+
+
+    @And("verifico que el carrito se encuentre vacio")
+    public void verificoQueElCarritoSeEncuentreVacio() {
+        productsPage.clearCartIfNotEmpty();
     }
 }
