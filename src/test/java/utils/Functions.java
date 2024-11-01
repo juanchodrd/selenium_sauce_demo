@@ -2,6 +2,7 @@ package utils;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -9,26 +10,10 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
-import io.cucumber.java.Scenario;
-
-import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 
 public class Functions {
 
-    private static final WebElement False = null;
-    //Config Config = new Config();
-    //String ExcelPath = Config.ExcelPath;
-    //XSSFWorkbook wb;
-    //XSSFSheet Hoja1;
-    File src;
-    String URLInicial;
-    String ruta;
-    String NAVEGADOR;
     ConfigFileReader configFileReader = new ConfigFileReader();
 
 
@@ -37,43 +22,36 @@ public class Functions {
 //#########################################################
 
     public WebDriver AbrirNavegador() {
-
         WebDriver driver;
         String browser = configFileReader.getBrowser();
 
         if (browser.equals("chrome")) {
-            // Configura el path del driver de Chrome
-            System.setProperty("webdriver.chrome.driver", "./drivers/chromedriver");
+            // Configura automáticamente el driver de Chrome
+            WebDriverManager.chromedriver().setup();
             ChromeOptions options = new ChromeOptions();
-            // Configura el path al binario de Chrome
+
+            // Configura el path al binario de Chrome si es necesario
             options.setBinary("/usr/bin/google-chrome");
 
-            // Para ejecutar la prueba sin que se abra el navegador leyendo desde properties
+            // Configura el navegador según las propiedades
             options.addArguments(configFileReader.setVisibleBrowser());
-
-            // Para evitar excepciones de seguridad
             options.setAcceptInsecureCerts(true);
-
-            options.addArguments("user-data-dir=/home/juancho/Automation/temp-chrome-profile"); // Usa el perfil temporal
-
+            options.addArguments("user-data-dir=/home/juancho/Automation/temp-chrome-profile"); // Perfil temporal
 
             driver = new ChromeDriver(options);
             driver.manage().window().maximize();
             return driver;
 
         } else if (browser.equals("firefox")) {
-            // Configura el path del driver de Firefox (geckodriver)
-            System.setProperty("webdriver.gecko.driver", "./drivers/geckodriver");
-            // Desactiva los logs del navegador
-            //	System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "/dev/null");
+            // Configura automáticamente el driver de Firefox
+            WebDriverManager.firefoxdriver().setup();
             FirefoxOptions options = new FirefoxOptions();
-            // Configura el path al binario de Firefox
+
+            // Configura el path al binario de Firefox si es necesario
             options.setBinary("/usr/bin/firefox");
 
-            // Para ejecutar la prueba sin que se abra el navegador leyendo desde properties
+            // Configura el navegador según las propiedades
             options.addArguments(configFileReader.setVisibleBrowser());
-
-            // Para evitar excepciones de seguridad
             options.setAcceptInsecureCerts(true);
 
             driver = new FirefoxDriver(options);
@@ -81,10 +59,11 @@ public class Functions {
             return driver;
 
         } else if (browser.equals("ie")) {
-            System.setProperty("webdriver.ie.driver", "./drivers/IEDriverServer32.exe");
+            // Configura automáticamente el driver de Internet Explorer
+            WebDriverManager.iedriver().setup();
             InternetExplorerOptions options = new InternetExplorerOptions();
-            // Para evitar excepciones de seguridad
             options.setAcceptInsecureCerts(true);
+
             driver = new InternetExplorerDriver(options);
             driver.manage().window().maximize();
             return driver;
@@ -95,7 +74,9 @@ public class Functions {
     }
 
     public void CerrarNavegador(WebDriver driver) {
-        driver.quit();
+        if (driver != null) {
+            driver.quit();
+        }
     }
 
     //#########################################################
