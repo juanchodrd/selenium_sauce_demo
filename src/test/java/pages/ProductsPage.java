@@ -7,7 +7,7 @@ import org.openqa.selenium.WebElement;
 
 public class ProductsPage {
 
-    // Definición de elementos
+    // Selectors
     private By menuButton = By.id("[id='react-burger-menu-btn']");
     private By productSelector = By.cssSelector("[data-test='inventory-item-name']");
     private By cartBadge = By.cssSelector("[data-test='shopping-cart-badge']");

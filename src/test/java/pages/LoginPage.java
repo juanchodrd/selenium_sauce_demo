@@ -11,7 +11,7 @@ import java.time.Duration;
 
 public class LoginPage {
 
-    // Definición de elementos
+    // Selectors
     private By usernameInput = By.cssSelector("[data-test='username']");
     private By passwordInput = By.cssSelector("[data-test='password']");
     private By loginSubmitButton = By.cssSelector("[data-test='login-button']");

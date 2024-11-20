@@ -7,7 +7,7 @@ import org.openqa.selenium.WebElement;
 
 public class DetailProductPage {
 
-    // Definición de elementos
+    // Selectors
     private By cartSelector = By.cssSelector("[data-test='add-to-cart']");
     private By productTitleSelector = By.cssSelector("[data-test='inventory-item-name']");
 
